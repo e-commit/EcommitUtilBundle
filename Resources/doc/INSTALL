@@ -1,0 +1,30 @@
+
+
+ ***************************************************
+ *                                                 *
+ *            INSTALLATION                         *
+ *                                                 *
+ ***************************************************
+
+* Add EcommitUtilBundle to your /src/Ecommit dir
+
+* Add the Ecommit namespace to your autoloader:
+
+// app/autoload.php 
+$loader->registerNamespaces(array(
+        // your other namespaces
+        'Ecommit' => __DIR__.'/../src',
+    );
+
+
+* Add EcommitUtilBundle to your application kernel
+
+// app/AppKernel.php
+public function registerBundles()
+{
+    return array(
+        // ...
+        new Ecommit\UtilBundle\EcommitUtilBundle(),
+        // ...
+    );
+}
