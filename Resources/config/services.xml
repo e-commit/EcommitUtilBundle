@@ -8,6 +8,7 @@
   <services>
     <service id="ecommit_util.helper" class="%ecommit_util.helper.class%">
         <argument type="service" id="translator" on-invalid="ignore" />
+        <argument type="service" id="templating.helper.assets" />
     </service>
   </services>
 </container>

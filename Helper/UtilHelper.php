@@ -12,19 +12,22 @@
 namespace Ecommit\UtilBundle\Helper;
 
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Templating\Helper\AssetsHelper;
 
 class UtilHelper
 {
     protected $translator = null;
+    protected $assets_helper = null;
     
     /**
      * Constructor
      * 
      * @param TranslatorInterface $translator 
      */
-    public function __construct(TranslatorInterface $translator = null) 
+    public function __construct(TranslatorInterface $translator = null, AssetsHelper $assets_helper) 
     {
         $this->translator = $translator;
+        $this->assets_helper = $assets_helper;
     }
     
     /**
@@ -84,5 +87,20 @@ class UtilHelper
             return $text;
         }
         return $this->translator->trans($text);
+    }
+    
+    /**
+     * Returns the public path.
+     *
+     * Absolute paths (i.e. http://...) are returned unmodified.
+     *
+     * @param string $path        A public path
+     * @param string $packageName The name of the asset package to use
+     *
+     * @return string A public path which takes into account the base path and URL path
+     */
+    public function getUrl($path, $packageName = null)
+    {
+        return $this->assets_helper->getUrl($path, $packageName);
     }
 }
