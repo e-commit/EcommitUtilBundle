@@ -34,6 +34,17 @@ class UtilHelper
     }
     
     /**
+     * Gets a service.
+     * WARNING ! Use this method only is required. NOT ABUSE.
+     * 
+     * @See ContainerInterface:get
+     */
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        return $this->container->get($id, $invalidBehavior);
+    }
+    
+    /**
      * Constructs an html tag
      * 
      * @param string $name Tag name
