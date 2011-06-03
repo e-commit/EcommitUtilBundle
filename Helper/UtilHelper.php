@@ -103,7 +103,7 @@ class UtilHelper
      *
      * @return string A public path which takes into account the base path and URL path
      */
-    public function getUrl($path, $packageName = null)
+    public function getAssetUrl($path, $packageName = null)
     {
         return $this->container->get('templating.helper.assets')->getUrl($path, $packageName);
     }
