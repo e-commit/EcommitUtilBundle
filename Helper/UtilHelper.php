@@ -11,23 +11,26 @@
 
 namespace Ecommit\UtilBundle\Helper;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Templating\Helper\AssetsHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UtilHelper
 {
-    protected $translator = null;
-    protected $assets_helper = null;
+    /**
+     * ContainerInterface and not directly services: Because some services need request
+     * (e.g.: "templating.helper.assets") and throw InactiveScopeException
+     * 
+     * @var ContainerInterface 
+     */
+    protected $container = null;
     
     /**
      * Constructor
      * 
-     * @param TranslatorInterface $translator 
+     * @param ContainerInterface $container 
      */
-    public function __construct(TranslatorInterface $translator = null, AssetsHelper $assets_helper) 
+    public function __construct(ContainerInterface $container) 
     {
-        $this->translator = $translator;
-        $this->assets_helper = $assets_helper;
+        $this->container = $container;
     }
     
     /**
@@ -82,11 +85,12 @@ class UtilHelper
      */
     public function translate($text)
     {
-        if(is_null($this->translator))
+        $translator = $this->container->get('translator', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+        if(is_null($translator))
         {
             return $text;
         }
-        return $this->translator->trans($text);
+        return $translator->trans($text);
     }
     
     /**
@@ -101,6 +105,6 @@ class UtilHelper
      */
     public function getUrl($path, $packageName = null)
     {
-        return $this->assets_helper->getUrl($path, $packageName);
+        return $this->container->get('templating.helper.assets')->getUrl($path, $packageName);
     }
 }
