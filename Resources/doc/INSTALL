@@ -6,14 +6,14 @@
  *                                                 *
  ***************************************************
 
-* Add EcommitUtilBundle to your /src/Ecommit dir
+* Add EcommitUtilBundle to your /vendor/bundles/Ecommit dir
 
 * Add the Ecommit namespace to your autoloader:
 
 // app/autoload.php 
 $loader->registerNamespaces(array(
         // your other namespaces
-        'Ecommit' => __DIR__.'/../src',
+        'Ecommit' => __DIR__.'/../vendor/bundles',
     );
 
 
