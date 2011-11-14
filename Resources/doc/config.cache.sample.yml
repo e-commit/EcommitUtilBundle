@@ -1,0 +1,13 @@
+ecommit_util:
+    cache:
+         templates:
+              cache_demo:
+                   frontend:
+                        name: Core
+                        options:
+                            lifetime: 3600
+                            automatic_serialization: true
+                   backend:
+                        name: File
+                        options:
+                            cache_dir: %kernel.root_dir%/cache/%kernel.environment%

@@ -27,9 +27,27 @@ class EcommitUtilExtension extends Extension
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
-    public function load(array $config, ContainerBuilder $container) 
+    public function load(array $configs, ContainerBuilder $container) 
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+		
+		/*
+		 * IMPORTANT: There is no Configuration class. We will build manually 
+		 * the configuration array, above:
+		 */
+		$templates = array();
+		foreach ($configs as $config)
+		{
+			if(!empty($config['cache']['templates']))
+			{
+				$templates = array_merge($templates, $config['cache']['templates']);
+			}
+		}
+		
+		foreach($templates as $name => $template)
+		{
+			$container->findDefinition('ecommit_cache.manager')->addMethodCall('setCacheTemplate', array($name, $template));
+		}
     }
 }
