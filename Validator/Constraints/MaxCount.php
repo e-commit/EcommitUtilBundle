@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxCount extends Constraint
 {
-	public $message = 'You must select at most {{ limit }} choices';
+    public $message = 'You must select at most {{ limit }} choices';
     public $invalidMessage = 'This value should be an array';
     public $limit;
 

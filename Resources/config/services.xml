@@ -3,15 +3,15 @@
   
   <parameters>
       <parameter key="ecommit_util.helper.class">Ecommit\UtilBundle\Helper\UtilHelper</parameter>
-	  <parameter key="ecommit_cache.manager.class">Zend\Cache\Manager</parameter>
+      <parameter key="ecommit_cache.manager.class">Zend\Cache\Manager</parameter>
   </parameters>
   
   <services>
     <service id="ecommit_util.helper" class="%ecommit_util.helper.class%">
         <argument type="service" id="service_container" />
     </service>
-	
-	<service id="ecommit_cache.manager" class="%ecommit_cache.manager.class%">
+    
+    <service id="ecommit_cache.manager" class="%ecommit_cache.manager.class%">
     </service>
   </services>
 </container>

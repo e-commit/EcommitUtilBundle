@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MaxCountValidator extends ConstraintValidator
 {
-	/**
+    /**
      * Checks if the passed value is valid.
      *
      * @param mixed      $value      The value that should be validated
@@ -28,23 +28,23 @@ class MaxCountValidator extends ConstraintValidator
      */
     public function isValid($value, Constraint $constraint)
     {
-		if(empty($value))
-		{
-			return true;
-		}
-		
-		if(!is_array($value))
-		{
-			$this->setMessage($constraint->invalidMessage);
-			return false;
-		}
-		
-		if(count($value) > $constraint->limit)
-		{
-			$this->setMessage($constraint->message, array('{{ limit }}' => $constraint->limit));
-			return false;
-		}
-		
-		return true;
-	}
+        if(empty($value))
+        {
+            return true;
+        }
+        
+        if(!is_array($value))
+        {
+            $this->setMessage($constraint->invalidMessage);
+            return false;
+        }
+        
+        if(count($value) > $constraint->limit)
+        {
+            $this->setMessage($constraint->message, array('{{ limit }}' => $constraint->limit));
+            return false;
+        }
+        
+        return true;
+    }
 }
