@@ -64,7 +64,7 @@ class UtilHelper
         {
             $options_html .= ' '.$key.'="'.\htmlspecialchars($value, \ENT_COMPAT).'"';
         }
-        if($content)
+        if($content !== null)
         {
             return '<'.$name.$options_html.'>'.$content.'</'.$name.'>';
         }
@@ -117,5 +117,30 @@ class UtilHelper
     public function getAssetUrl($path, $packageName = null)
     {
         return $this->container->get('templating.helper.assets')->getUrl($path, $packageName);
+    }
+    
+    public function table($values, $size, $table_options = array(),  $tr_options = array(), $td_options = array())
+    {
+        $count_values = \count($values);
+        if(!is_array($values) || $count_values == 0)
+        {
+            return '';
+        }
+        for($i=0; $i < $count_values % $size; $i++)
+        {
+            $values[] = '';
+        }
+        
+        $table_content = '';
+        foreach(\array_chunk($values, $size) as $tr)
+        {
+            $tr_content = '';
+            foreach($tr as $td)
+            {
+                $tr_content .= $this->tag('td', $td_options, $td);
+            }
+            $table_content .= $this->tag('tr', $tr_options, $tr_content);
+        }
+        return $this->tag('table', $table_options, $table_content);
     }
 }
