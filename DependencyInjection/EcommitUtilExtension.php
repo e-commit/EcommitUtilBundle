@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 class EcommitUtilExtension extends Extension 
 {
@@ -36,18 +37,23 @@ class EcommitUtilExtension extends Extension
          * IMPORTANT: There is no Configuration class. We will build manually 
          * the configuration array, above:
          */
-        $templates = array();
+        $caches = array();
         foreach ($configs as $config)
         {
-            if(!empty($config['cache']['templates']))
+            if(!empty($config['cache']))
             {
-                $templates = array_merge($templates, $config['cache']['templates']);
+                $caches = array_merge($caches, $config['cache']);
             }
         }
         
-        foreach($templates as $name => $template)
+        foreach($caches as $name => $options)
         {
-            $container->findDefinition('ecommit_cache.manager')->addMethodCall('setCacheTemplate', array($name, $template));
+            $service_name = sprintf('ecommit_cache_%s', $name);
+            $container
+                ->setDefinition($service_name, new DefinitionDecorator('ecommit_util.cache'))
+                ->replaceArgument(0, $options)
+                ->setPublic(true)
+            ;
         }
     }
 }

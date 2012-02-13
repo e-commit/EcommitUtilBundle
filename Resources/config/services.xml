@@ -4,7 +4,7 @@
   <parameters>
       <parameter key="ecommit_util.helper.class">Ecommit\UtilBundle\Helper\UtilHelper</parameter>
       <parameter key="ecommit_util.helper.twig.extension.util.class">Ecommit\UtilBundle\Helper\Twig\UtilExtension</parameter>
-      <parameter key="ecommit_cache.manager.class">Zend\Cache\Manager</parameter>
+      <parameter key="ecommit_util.cache.class">Ecommit\UtilBundle\Cache\Cache</parameter>
   </parameters>
   
   <services>
@@ -17,7 +17,8 @@
         <tag name="twig.extension" />
     </service>
     
-    <service id="ecommit_cache.manager" class="%ecommit_cache.manager.class%">
+    <service id="ecommit_util.cache" class="%ecommit_util.cache.class%" abstract="true" public="false">
+         <argument /> <!-- Options -->
     </service>
   </services>
 </container>
