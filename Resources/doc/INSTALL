@@ -7,18 +7,9 @@
  ***************************************************
 
 * Install prerequisites:
-  - Zend (version: 2.0.0beta2) if Zend cache is used
+  - zendframework/zendframework if Zend cache is used
 
-* Add EcommitUtilBundle to your /vendor/bundles/Ecommit dir
-
-* Add the Ecommit namespace to your autoloader:
-
-// app/autoload.php 
-$loader->registerNamespaces(array(
-        // your other namespaces
-        'Ecommit' => __DIR__.'/../vendor/bundles',
-    );
-
+* Add EcommitUtilBundle to your vendor dir
 
 * Add EcommitUtilBundle to your application kernel
 

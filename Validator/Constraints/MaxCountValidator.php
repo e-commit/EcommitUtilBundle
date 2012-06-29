@@ -26,25 +26,25 @@ class MaxCountValidator extends ConstraintValidator
      *
      * @api
      */
-    public function isValid($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if(empty($value))
         {
-            return true;
+            return;
         }
         
         if(!is_array($value))
         {
-            $this->setMessage($constraint->invalidMessage);
-            return false;
+            $this->context->addViolation($constraint->invalidMessage);
+            return;
         }
         
         if(count($value) > $constraint->limit)
         {
-            $this->setMessage($constraint->message, array('{{ limit }}' => $constraint->limit));
-            return false;
+            $this->context->addViolation($constraint->message, array('{{ limit }}' => $constraint->limit));
+            return;
         }
         
-        return true;
+        return;
     }
 }
