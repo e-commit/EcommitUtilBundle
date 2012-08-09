@@ -126,9 +126,12 @@ class UtilHelper
         {
             return '';
         }
-        for($i=0; $i < $count_values % $size; $i++)
+        if($count_values % $size > 0)
         {
-            $values[] = '';
+            for($i=0; $i < ($size - $count_values % $size); $i++)
+            {
+                $values[] = '';
+            }
         }
         
         $table_content = '';
