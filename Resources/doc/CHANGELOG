@@ -1,6 +1,0 @@
-CHANGELOG
-=========
-
-* 1.2.x
-
-  * [BC break] [Validator] Suppression de MaxCountValidator, remplacé par CountValidator (Validator SF)
