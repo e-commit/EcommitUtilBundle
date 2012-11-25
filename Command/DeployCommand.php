@@ -23,8 +23,8 @@ class DeployCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-                ->setName('ecomutil:deploy')
-                ->setDescription('Deploy the project')
+                ->setName('ecommit:deploy')
+                ->setDescription('Deploy the application')
                 ->addArgument('server', InputArgument::REQUIRED, 'Server name')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Execute the command')
         ;
