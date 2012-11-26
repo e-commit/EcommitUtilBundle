@@ -15,5 +15,10 @@
     "autoload": {
         "psr-0": { "Ecommit\\UtilBundle": "" }
     },
-    "target-dir": "Ecommit/UtilBundle"
+    "target-dir": "Ecommit/UtilBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.3.x-dev"
+        }
+    }
 }

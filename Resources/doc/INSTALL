@@ -8,7 +8,7 @@
 
 * Install prerequisites:
   - Symfony 2.1
-  - zendframework/zendframework if Zend cache is used
+  - zendframework/zend-cache if Zend cache is used
 
 * Add EcommitUtilBundle to your vendor dir
 
