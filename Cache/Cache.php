@@ -45,28 +45,26 @@ class Cache
      * Test if an item exists
      * 
      * @param  string $key
-     * @param  array $options
      * @return boolean
      * @throws \Zend\Cache\Exception
      */
-    public function test($key, array $options = array())
+    public function test($key)
     {
-        return $this->adapter->hasItem($key, $options);
+        return $this->adapter->hasItem($key);
     }
     
     /**
      * Get an item
      * 
      * @param  string $key
-     * @param  array $options
      * @return mixed Data on success and false on failure
      * @throws \Zend\Cache\Exception
      */
-    public function load($key, array $options = array())
+    public function load($key)
     {
-        $data = $this->adapter->getItem($key, $options);
+        $data = $this->adapter->getItem($key, $success);
         
-        if($this->automatic_serialization)
+        if($success && $this->automatic_serialization)
         {
             $data = @unserialize($data);
             
@@ -85,56 +83,39 @@ class Cache
      * 
      * @param  string $key
      * @param  mixed $value
-     * @param  array $options
      * @return boolean
      * @throws \Zend\Cache\Exception
      */
-    public function save($key, $value, array $options = array())
+    public function save($key, $value)
     {
         if($this->automatic_serialization)
         {
             $value = serialize($value);
         }
         
-        return $this->adapter->setItem($key, $value, $options);
+        return $this->adapter->setItem($key, $value);
     }
     
     /**
      * Remove an item
      * 
      * @param  string $key
-     * @param  array $options
      * @return boolean
      * @throws \Zend\Cache\Exception
      */
-    public function remove($key, array $options = array())
+    public function remove($key)
     {
-        return $this->adapter->removeItem($key, $options);
+        return $this->adapter->removeItem($key);
     }
     
     /**
-     * Clear items off all namespaces
+     * Flush the whole storage
      * 
-     * @param  int $mode Matching mode (Value of Adapter::MATCH_*)
-     * @param  array $options
      * @return boolean
      * @throws \Zend\Cache\Exception
      */
-    public function clean($mode = Zend\Cache\Storage\Adapter::MATCH_EXPIRED, array $options = array())
+    public function flush()
     {
-        return $this->adapter->clear($mode, $options);
-    }
-    
-    /**
-     * Clear items by namespace
-     * 
-     * @param  int $mode Matching mode (Value of Adapter::MATCH_*)
-     * @param  array $options
-     * @return boolean
-     * @throws \Zend\Cache\Exception
-     */
-    public function cleanByNamespace($mode = Zend\Cache\Storage\Adapter::MATCH_EXPIRED, array $options = array())
-    {
-        return $this->adapter->clearByNamespace($mode, $options);
+        return $this->adapter->flush();
     }
 }
