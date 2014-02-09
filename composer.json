@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": ">=2.2.0,<2.5"
+        "symfony/framework-bundle": "~2.4.0"
     },
     "autoload": {
         "psr-0": { "Ecommit\\UtilBundle": "" }
@@ -18,7 +18,7 @@
     "target-dir": "Ecommit/UtilBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.4.x-dev"
+            "dev-master": "1.5.x-dev"
         }
     }
 }
