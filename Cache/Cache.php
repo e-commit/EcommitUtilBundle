@@ -20,13 +20,12 @@ class Cache
      */
     protected $adapter;
     
-    protected $automatic_serialization = true;
+    protected $automaticSerialization = true;
     
     public function __construct($options = array())
     {
-        if(isset($options['automatic_serialization']))
-        {
-            $this->automatic_serialization = $options['automatic_serialization'];
+        if (isset($options['automatic_serialization'])) {
+            $this->automaticSerialization = $options['automatic_serialization'];
             unset($options['automatic_serialization']);
         }
         $this->adapter = StorageFactory::factory($options);
@@ -63,17 +62,15 @@ class Cache
     public function load($key)
     {
         $data = $this->adapter->getItem($key, $success);
-        
-        if($success && $this->automatic_serialization)
-        {
+
+        if ($success && $this->automaticSerialization) {
             $data = @unserialize($data);
             
-            if($data === false)
-            {
+            if ($data === false) {
                 $this->remove($key);
             }
         }
-        
+
         return $data;
     }
     
@@ -88,11 +85,10 @@ class Cache
      */
     public function save($key, $value)
     {
-        if($this->automatic_serialization)
-        {
+        if ($this->automaticSerialization) {
             $value = serialize($value);
         }
-        
+
         return $this->adapter->setItem($key, $value);
     }
     

@@ -27,28 +27,28 @@ class UtilHelper
         return $javascript;
     }
 
-    public function table($values, $size, $table_options = array(), $tr_options = array(), $td_options = array())
+    public function table($values, $size, $tableOptions = array(), $trOptions = array(), $tdOptions = array())
     {
-        $count_values = \count($values);
-        if (!is_array($values) || $count_values == 0) {
+        $countValues = \count($values);
+        if (!is_array($values) || $countValues == 0) {
             return '';
         }
-        if ($count_values % $size > 0) {
-            for ($i = 0; $i < ($size - $count_values % $size); $i++) {
+        if ($countValues % $size > 0) {
+            for ($i = 0; $i < ($size - $countValues % $size); $i++) {
                 $values[] = '';
             }
         }
 
-        $table_content = '';
+        $tableContent = '';
         foreach (\array_chunk($values, $size) as $tr) {
-            $tr_content = '';
+            $trContent = '';
             foreach ($tr as $td) {
-                $tr_content .= $this->tag('td', $td_options, $td);
+                $trContent .= $this->tag('td', $tdOptions, $td);
             }
-            $table_content .= $this->tag('tr', $tr_options, $tr_content);
+            $tableContent .= $this->tag('tr', $trOptions, $trContent);
         }
 
-        return $this->tag('table', $table_options, $table_content);
+        return $this->tag('table', $tableOptions, $tableContent);
     }
 
     /**
@@ -65,14 +65,14 @@ class UtilHelper
         if (!$name) {
             return '';
         }
-        $options_html = '';
+        $htmlOptions = '';
         foreach ($options as $key => $value) {
-            $options_html .= ' ' . $key . '="' . \htmlspecialchars($value, \ENT_COMPAT) . '"';
+            $htmlOptions .= ' ' . $key . '="' . \htmlspecialchars($value, \ENT_COMPAT) . '"';
         }
         if ($content !== null) {
-            return '<' . $name . $options_html . '>' . $content . '</' . $name . '>';
+            return '<' . $name . $htmlOptions . '>' . $content . '</' . $name . '>';
         } else {
-            return '<' . $name . $options_html . (($open) ? '>' : ' />');
+            return '<' . $name . $htmlOptions . (($open) ? '>' : ' />');
         }
     }
 }

@@ -61,8 +61,8 @@ class UtilExtension extends Twig_Extension
      *
      * @see UtilHelper
      */
-    public function table($values, $size, $table_options = array(), $tr_options = array(), $td_options = array())
+    public function table($values, $size, $tableOptions = array(), $trOptions = array(), $tdOptions = array())
     {
-        return $this->utilHelper->table($values, $size, $table_options, $tr_options, $td_options);
+        return $this->utilHelper->table($values, $size, $tableOptions, $trOptions, $tdOptions);
     }
 }
