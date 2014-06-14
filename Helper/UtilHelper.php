@@ -19,7 +19,7 @@ class UtilHelper
      * @param string $javascript Input Text
      * @return string
      */
-    public function escape_javascript($javascript = '')
+    public function escapeJavascript($javascript = '')
     {
         $javascript = preg_replace('/\r\n|\n|\r/', "\\n", $javascript);
         $javascript = preg_replace('/(["\'])/', '\\\\\1', $javascript);
