@@ -3,16 +3,15 @@
   
   <parameters>
       <parameter key="ecommit_util.helper.class">Ecommit\UtilBundle\Helper\UtilHelper</parameter>
-      <parameter key="ecommit_util.helper.twig.extension.util.class">Ecommit\UtilBundle\Helper\Twig\UtilExtension</parameter>
+      <parameter key="ecommit_util.twig.util_extension.class">Ecommit\UtilBundle\Twig\UtilExtension</parameter>
       <parameter key="ecommit_util.cache.class">Ecommit\UtilBundle\Cache\Cache</parameter>
   </parameters>
   
   <services>
     <service id="ecommit_util.helper" class="%ecommit_util.helper.class%">
-        <argument type="service" id="service_container" />
     </service>
-    
-    <service id="ecommit_util.helper.twig.extension.util" class="%ecommit_util.helper.twig.extension.util.class%">
+
+    <service id="ecommit_util.twig.util_extension" class="%ecommit_util.twig.util_extension.class%">
         <argument type="service" id="ecommit_util.helper" />
         <tag name="twig.extension" />
     </service>
