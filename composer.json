@@ -10,7 +10,11 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "~2.5.0"
+        "symfony/framework-bundle": ">=2.5.2, <2.6",
+        "twig/twig": "*"
+    },
+    "suggest": {
+        "zendframework/zend-cache": "Required if cache is used"
     },
     "autoload": {
         "psr-0": { "Ecommit\\UtilBundle": "" }
