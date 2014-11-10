@@ -64,7 +64,7 @@ class Cache
         $data = $this->adapter->getItem($key, $success);
 
         if ($success && $this->automaticSerialization) {
-            $data = @unserialize($data);
+            $data = unserialize($data);
             
             if ($data === false) {
                 $this->remove($key);
