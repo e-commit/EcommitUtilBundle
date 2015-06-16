@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": ">=2.5.2, <2.7",
+        "symfony/framework-bundle": ">=2.5.2, <2.8",
         "twig/twig": "*"
     },
     "suggest": {
