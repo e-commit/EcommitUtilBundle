@@ -13,5 +13,9 @@
     <service id="ecommit_util.cache" class="Ecommit\UtilBundle\Cache\Cache" abstract="true" public="false">
          <argument /> <!-- Options -->
     </service>
+
+    <service id="ecommit_util.clear_entity_manager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager">
+         <argument type="service" id="doctrine" />
+    </service>
   </services>
 </container>
