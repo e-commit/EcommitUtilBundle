@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": ">=2.5.2, <2.8",
+        "symfony/framework-bundle": "~2.8",
         "twig/twig": "*"
     },
     "suggest": {
@@ -22,7 +22,7 @@
     "target-dir": "Ecommit/UtilBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }
