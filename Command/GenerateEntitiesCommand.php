@@ -141,13 +141,13 @@ class GenerateEntitiesCommand extends ContainerAwareCommand
 
         $content = str_replace("\r", "", $content);
 
-        //Delete comments in "extends" (if found)
-        $pattern = '/(class\s+.+)\\/\\*(\s+extends\s.+)\\*\\/\n/iU';
-        $content = preg_replace($pattern, "$1$2\n", $content);
+        //Delete comments in "extends" and "impements" (if found)
+        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.+)\\*\\/\\{/iUs';
+        $content = preg_replace($pattern, "$1$2{", $content);
 
-        //Comment "extends"
-        $pattern = '/(class\s+.+)(\s+extends\s.+)\n/iU';
-        $content = preg_replace($pattern, "$1/*$2*/\n", $content);
+        //Comment "extends" and "impements"
+        $pattern = '/(class\s+[a-z0-9_-]+?)(.*)\\{/iUs';
+        $content = preg_replace($pattern, "$1/*$2*/{", $content);
 
         //Delete getters / setters
         $pattern = \sprintf('/(%s)(.*)\\}/is', $this->getHeaderGetterSetterPattern());
@@ -165,9 +165,9 @@ class GenerateEntitiesCommand extends ContainerAwareCommand
 
         $content = str_replace("\r", "", $content);
 
-        //Delete comments in "extends"
-        $pattern = '/(class\s+.+)\\/\\*(\s+extends\s.+)\\*\\/\n/iU';
-        $content = preg_replace($pattern, "$1$2\n", $content);
+        //Delete comments in "extends" and "impements"
+        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.+)\\*\\/\\{/iUs';
+        $content = preg_replace($pattern, "$1$2{", $content);
 
         //Add "=null" in setters when foreign key is used
         $patternGettersSetters = \sprintf('/(%s)(.*)\\}/is', $this->getHeaderGetterSetterPattern());
