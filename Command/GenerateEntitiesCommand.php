@@ -142,7 +142,7 @@ class GenerateEntitiesCommand extends ContainerAwareCommand
         $content = str_replace("\r", "", $content);
 
         //Delete comments in "extends" and "impements" (if found)
-        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.+)\\*\\/(\\r*\\n\\{)/iUs';
+        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.*)\\*\\/(\\r*\\n\\{)/iUs';
         $content = preg_replace($pattern, "$1$2$3", $content);
 
         //Comment "extends" and "impements"
@@ -166,7 +166,7 @@ class GenerateEntitiesCommand extends ContainerAwareCommand
         $content = str_replace("\r", "", $content);
 
         //Delete comments in "extends" and "impements"
-        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.+)\\*\\/(\\r*\\n\\{)/iUs';
+        $pattern = '/(class\s+[a-z0-9_-]+?)\\/\\*(.*)\\*\\/(\\r*\\n\\{)/iUs';
         $content = preg_replace($pattern, "$1$2$3", $content);
 
         //Add "=null" in setters when foreign key is used
