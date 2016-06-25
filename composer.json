@@ -18,9 +18,8 @@
         "doctrine/orm": "Required if ClearEntityManager or GenerateEntitiesCommand is used"
     },
     "autoload": {
-        "psr-0": { "Ecommit\\UtilBundle": "" }
+        "psr-4": { "Ecommit\\UtilBundle\\": "" }
     },
-    "target-dir": "Ecommit/UtilBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.4.x-dev"
