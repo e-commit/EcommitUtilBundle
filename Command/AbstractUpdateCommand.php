@@ -245,9 +245,11 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         $config = $this->getContainer()->getParameter('fm_elfinder');
         foreach ($config['instances'] as $instance) {
             foreach ($instance['connector']['roots'] as $root) {
-                $dir = $this->getContainer()->get('kernel')->getRootDir().'/../web/'.$root['path'];
-                if (!$fs->exists($dir)) {
-                    $fs->mkdir($dir, 0777);
+                if ('LocalFileSystem' === $root['driver']) {
+                    $dir = $this->getContainer()->get('kernel')->getRootDir().'/../web/'.$root['path'];
+                    if (!$fs->exists($dir)) {
+                        $fs->mkdir($dir, 0777);
+                    }
                 }
             }
         }

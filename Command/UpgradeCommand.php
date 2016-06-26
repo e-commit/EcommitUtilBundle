@@ -46,7 +46,6 @@ class UpgradeCommand extends AbstractUpdateCommand
             return;
         }
 
-        $this->updateDoctrineSchema($output);
         $this->migrateDoctrineMigrations($output);
         $this->dumpJsTranslations($output);
         $this->installAssets($output);
