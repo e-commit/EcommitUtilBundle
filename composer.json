@@ -11,7 +11,7 @@
     ],
     "require": {
         "symfony/framework-bundle": "~3.0",
-        "twig/twig": "*"
+        "symfony/twig-bundle": "~3.0"
     },
     "suggest": {
         "zendframework/zend-cache": "Required if cache is used",
