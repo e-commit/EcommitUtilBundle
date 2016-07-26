@@ -176,7 +176,7 @@ class GenerateEntitiesCommand extends ContainerAwareCommand
         }
         $gettersSetters = $matches[2];
         if (!empty($gettersSetters)) {
-            $pattern = '/(function set[A-Z].+\\(.+ \\$[a-zA-Z_-]+)\\)/U';
+            $pattern = '/(function set[A-Z].+\\(.+ \\$[a-zA-Z0-9_-]+)\\)/U';
             $gettersSetters = preg_replace($pattern, '$1 = null)', $gettersSetters);
             $content = preg_replace($patternGettersSetters, '$1'.$gettersSetters.'}', $content);
         }
