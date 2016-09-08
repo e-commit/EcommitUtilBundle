@@ -255,6 +255,31 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         }
     }
 
+    protected function clearApcu(OutputInterface $output)
+    {
+        if (!$this->getContainer()->hasParameter('ecommit_util.upgrade.clear_apcu') || !$this->getContainer()->getParameter('ecommit_util.upgrade.clear_apcu')) {
+            return;
+        }
+
+        $output->writeln('<comment>Clear APCU...</comment>');
+
+        $fs = new Filesystem();
+        $filename = \sprintf('cc_%s.php', uniqid('apc', true));
+        $filePath = $this->getContainer()->get('kernel')->getRootDir().'/../web/'.$filename;
+        $content = '<?php require __DIR__.\'/../vendor/autoload.php\'; apcu_clear_cache(); echo json_encode(array(\'success\' => true));';
+        $fs->dumpFile($filePath, $content);
+        $url = \sprintf('%s://%s/%s',
+            $this->getContainer()->getParameter('router.request_context.scheme'),
+            $this->getContainer()->getParameter('router.request_context.host'),
+            $filename
+        );
+        $client = new \GuzzleHttp\Client();
+        $client->request('GET', $url, array(
+            'http_errors' => true,
+        ));
+        $fs->remove($filePath);
+    }
+
     /**
      * @param string $bundleName
      * @return bool

@@ -15,7 +15,8 @@
     },
     "suggest": {
         "zendframework/zend-cache": "Required if cache is used",
-        "doctrine/orm": "Required if ClearEntityManager or GenerateEntitiesCommand is used"
+        "doctrine/orm": "Required if ClearEntityManager or GenerateEntitiesCommand is used",
+        "guzzlehttp/guzzle": "Required if clear APCU is enabled in upgrade command"
     },
     "autoload": {
         "psr-4": { "Ecommit\\UtilBundle\\": "" }
