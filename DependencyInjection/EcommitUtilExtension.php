@@ -30,24 +30,20 @@ class EcommitUtilExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        /*
-         * IMPORTANT: There is no Configuration class. We will build manually 
-         * the configuration array, above:
-         */
-        $caches = array();
-        foreach ($configs as $config) {
-            if (!empty($config['cache'])) {
-                $caches = array_merge($caches, $config['cache']);
-            }
-        }
+        $container->setParameter('ecommit_util.clear_apcu.url', $config['clear_apcu']['url']);
+        $container->setParameter('ecommit_util.clear_apcu.username', $config['clear_apcu']['username']);
+        $container->setParameter('ecommit_util.clear_apcu.password', $config['clear_apcu']['password']);
 
-        foreach ($caches as $name => $options) {
-            $service_name = sprintf('ecommit_cache_%s', $name);
+        foreach ($config['cache'] as $name => $options) {
+            $serviceName = sprintf('ecommit_cache_%s', $name);
             $container
-                ->setDefinition($service_name, new DefinitionDecorator('ecommit_util.cache'))
+                ->setDefinition($serviceName, new DefinitionDecorator('ecommit_util.cache'))
                 ->replaceArgument(0, $options)
                 ->setPublic(true);
         }
