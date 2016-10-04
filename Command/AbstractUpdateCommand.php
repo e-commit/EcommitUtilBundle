@@ -257,7 +257,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
 
     protected function clearApcu(OutputInterface $output)
     {
-        if (!$this->getContainer()->hasParameter('ecommit_util.clear_apcu.url')) {
+        if (!$this->getContainer()->getParameter('ecommit_util.clear_apcu.url')) {
             return;
         }
 
