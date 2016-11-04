@@ -28,6 +28,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
 {
     protected $begin;
     protected $end;
+    protected $isInteractive;
 
     /**
      * @return string
@@ -41,12 +42,15 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
 
     protected function start(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getHelperSet()->get('question');
-        $question = new ConfirmationQuestion('Continue with this action? [y/n] ', false);
-        if (!$dialog->ask($input, $output, $question)) {
-            $output->writeln('Aborting !');
+        $this->isInteractive = $input->isInteractive();
+        if ($this->isInteractive) {
+            $dialog = $this->getHelperSet()->get('question');
+            $question = new ConfirmationQuestion('Continue with this action? [y/n] ', false);
+            if (!$dialog->ask($input, $output, $question)) {
+                $output->writeln('Aborting !');
 
-            return false;
+                return false;
+            }
         }
         $this->begin = \microtime(true);
 
@@ -89,6 +93,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
             '--force' => true,
         );
         $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
         $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
@@ -119,6 +124,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
             'command' => 'doctrine:fixtures:load',
         );
         $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
         $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
@@ -144,6 +150,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
             '--all' => true,
         );
         $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
         $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
@@ -167,6 +174,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
             'command' => 'doctrine:migrations:migrate',
         );
         $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
         $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
@@ -185,8 +193,9 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         $arguments = array(
             'command' => 'bazinga:js-translation:dump',
         );
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($input, $output);
+        $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
+        $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
         }
@@ -207,8 +216,9 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
             'target' => $webDir,
             '--relative' => true,
         );
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($input, $output);
+        $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
+        $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
         }
@@ -226,8 +236,9 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         $arguments = array(
             'command' => 'assetic:dump',
         );
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($input, $output);
+        $arrayInput = new ArrayInput($arguments);
+        $arrayInput->setInteractive($this->isInteractive);
+        $returnCode = $command->run($arrayInput, $output);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Error');
         }
