@@ -13,6 +13,9 @@ namespace Ecommit\UtilBundle\Cache;
 
 use Zend\Cache\StorageFactory;
 
+/**
+ * @deprecated Deprecated since version 2.4.
+ */
 class Cache
 {
     /**
@@ -24,6 +27,8 @@ class Cache
     
     public function __construct($options = array())
     {
+        trigger_error('Ecommit\UtilBundle\Cache\Cache class is deprecated since version 2.4. Use symfony/cache instead.', E_USER_DEPRECATED);
+
         if (isset($options['automatic_serialization'])) {
             $this->automaticSerialization = $options['automatic_serialization'];
             unset($options['automatic_serialization']);
