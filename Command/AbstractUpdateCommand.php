@@ -285,6 +285,23 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         $client->request('GET', $this->getContainer()->getParameter('ecommit_util.clear_apcu.url'), $requestOptions);
     }
 
+    protected function addInstallLockFile(OutputInterface $output)
+    {
+        $lockPath = $this->getInstallLockPath();
+        if (!$lockPath) {
+            return;
+        }
+
+        $fs = new Filesystem();
+        if ($fs->exists($lockPath)) {
+            return;
+        }
+
+        $output->writeln('<comment>Add install.lock file...</comment>');
+
+        $fs->touch($lockPath);
+    }
+
     /**
      * @param string $bundleName
      * @return bool
@@ -308,5 +325,10 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         DoctrineCommand::configureMigrations($this->getContainer(), $configuration);
 
         return $configuration->getAvailableVersions();
+    }
+
+    protected function getInstallLockPath()
+    {
+        return $this->getContainer()->getParameter('ecommit_util.install_lock_file');
     }
 }

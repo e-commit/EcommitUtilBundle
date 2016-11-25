@@ -14,6 +14,7 @@ namespace Ecommit\UtilBundle\Command;
 use Ecommit\UtilBundle\Event\UpdateEvents;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class InstallCommand extends AbstractUpdateCommand
 {
@@ -46,6 +47,15 @@ class InstallCommand extends AbstractUpdateCommand
             return;
         }
 
+        //Check lock
+        $fs = new Filesystem();
+        $lockPath = $this->getInstallLockPath();
+        if ($lockPath && $fs->exists($lockPath)) {
+            $output->writeln('<error>Aborting - Application already installed</error>');
+
+            return;
+        }
+
         $this->updateDoctrineSchema($output);
         $this->loadDoctrineFixtures($output);
         $this->addDoctrineMigrations($output);
@@ -53,6 +63,7 @@ class InstallCommand extends AbstractUpdateCommand
         $this->installAssets($output);
         $this->dumpAssetic($output);
         $this->createFMElfinderDir($output);
+        $this->addInstallLockFile($output);
 
         $this->finish($input, $output);
     }

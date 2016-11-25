@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('password')->defaultValue(null)->end()
                     ->end()
                 ->end()
+                ->scalarNode('install_lock_file')->defaultValue('%kernel.root_dir%/../var/install.lock')->end()
                 ->arrayNode('cache')
                     ->treatNullLike(array())
                     ->useAttributeAsKey('name')

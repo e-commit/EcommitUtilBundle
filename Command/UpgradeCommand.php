@@ -52,6 +52,7 @@ class UpgradeCommand extends AbstractUpdateCommand
         $this->installAssets($output);
         $this->dumpAssetic($output);
         $this->createFMElfinderDir($output);
+        $this->addInstallLockFile($output);
 
         $this->finish($input, $output);
     }

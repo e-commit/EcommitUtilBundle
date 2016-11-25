@@ -40,6 +40,8 @@ class EcommitUtilExtension extends Extension
         $container->setParameter('ecommit_util.clear_apcu.username', $config['clear_apcu']['username']);
         $container->setParameter('ecommit_util.clear_apcu.password', $config['clear_apcu']['password']);
 
+        $container->setParameter('ecommit_util.install_lock_file', $config['install_lock_file']);
+
         foreach ($config['cache'] as $name => $options) {
             $serviceName = sprintf('ecommit_cache_%s', $name);
             $container
