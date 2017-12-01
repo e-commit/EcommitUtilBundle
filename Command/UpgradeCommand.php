@@ -15,6 +15,9 @@ use Ecommit\UtilBundle\Event\UpdateEvents;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @deprecated Deprecated since version 2.4.
+ */
 class UpgradeCommand extends AbstractUpdateCommand
 {
     protected function configure()
@@ -42,6 +45,8 @@ class UpgradeCommand extends AbstractUpdateCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        trigger_error('UpgradeCommand is deprecated since version 2.4.', E_USER_DEPRECATED);
+
         if (!$this->start($input, $output)) {
             return;
         }

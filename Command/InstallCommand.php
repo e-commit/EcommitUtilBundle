@@ -16,6 +16,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @deprecated Deprecated since version 2.4.
+ */
 class InstallCommand extends AbstractUpdateCommand
 {
     protected function configure()
@@ -43,6 +46,8 @@ class InstallCommand extends AbstractUpdateCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        trigger_error('InstallCommand is deprecated since version 2.4.', E_USER_DEPRECATED);
+
         if (!$this->start($input, $output)) {
             return;
         }
