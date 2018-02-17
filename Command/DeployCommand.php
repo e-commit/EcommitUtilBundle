@@ -32,15 +32,19 @@ class DeployCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Parse the rsync.ini file
-        $rsync_ini_file = $this->getContainer()->getParameter('kernel.root_dir') . '/config/rsync.ini';
-        if (!file_exists($rsync_ini_file)) {
-            $output->writeln(sprintf('<error>File %s does not exist</error>', $rsync_ini_file));
+        $rsyncIniFile = $this->getContainer()->getParameter('kernel.project_dir') . '/config/rsync.ini';
+        if (!file_exists($rsyncIniFile)) {
+            $rsyncIniFile = $this->getContainer()->getParameter('kernel.project_dir') . '/app/config/rsync.ini';
+            if (!file_exists($rsyncIniFile)) {
+                $output->writeln('<error>File sync.ini does not exist</error>');
 
-            return;
+                return;
+            }
         }
-        $result = parse_ini_file($rsync_ini_file, true);
+
+        $result = parse_ini_file($rsyncIniFile, true);
         if (false === $result || array() === $result) {
-            $output->writeln(sprintf('<error>File %s: Bad format</error>', $rsync_ini_file));
+            $output->writeln(sprintf('<error>File %s: Bad format</error>', $rsyncIniFile));
 
             return;
         }
@@ -79,8 +83,9 @@ class DeployCommand extends ContainerAwareCommand
         $parameters = '-azC --force --delete --progress';
 
         // RSYNC exclude option
-        $rsync_exclude_file = $this->getContainer()->getParameter('kernel.root_dir') . '/config/rsync_exclude.txt';
-        if (file_exists($rsync_exclude_file)) {
+        if (file_exists($this->getContainer()->getParameter('kernel.project_dir') . '/config/rsync_exclude.txt')) {
+            $parameters .= sprintf(' --exclude-from=config/rsync_exclude.txt');
+        } elseif (file_exists($this->getContainer()->getParameter('kernel.project_dir') . '/app/config/rsync_exclude.txt')) {
             $parameters .= sprintf(' --exclude-from=app/config/rsync_exclude.txt');
         } else {
             $dialog = $this->getHelperSet()->get('dialog');
