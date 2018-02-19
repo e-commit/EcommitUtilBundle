@@ -2,10 +2,10 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   
   <services>
-    <service id="ecommit_util.helper" class="Ecommit\UtilBundle\Helper\UtilHelper">
+    <service id="ecommit_util.helper" class="Ecommit\UtilBundle\Helper\UtilHelper" public="true">
     </service>
 
-    <service id="ecommit_util.twig.util_extension" class="Ecommit\UtilBundle\Twig\UtilExtension">
+    <service id="ecommit_util.twig.util_extension" class="Ecommit\UtilBundle\Twig\UtilExtension" public="false">
         <argument type="service" id="ecommit_util.helper" />
         <tag name="twig.extension" />
     </service>
@@ -14,7 +14,7 @@
          <argument /> <!-- Options -->
     </service>
 
-    <service id="ecommit_util.clear_entity_manager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager">
+    <service id="ecommit_util.clear_entity_manager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true">
          <argument type="service" id="doctrine" on-invalid="null" />
     </service>
 

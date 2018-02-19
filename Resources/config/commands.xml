@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Ecommit\UtilBundle\Command\ClearApcuCommand" class="Ecommit\UtilBundle\Command\ClearApcuCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Ecommit\UtilBundle\Command\CompareLocalesCommand" class="Ecommit\UtilBundle\Command\CompareLocalesCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Ecommit\UtilBundle\Command\DeployCommand" class="Ecommit\UtilBundle\Command\DeployCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Ecommit\UtilBundle\Command\GenerateEntitiesCommand" class="Ecommit\UtilBundle\Command\GenerateEntitiesCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Ecommit\UtilBundle\Command\InstallCommand" class="Ecommit\UtilBundle\Command\InstallCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="Ecommit\UtilBundle\Command\UpgradeCommand" class="Ecommit\UtilBundle\Command\UpgradeCommand" public="false">
+            <tag name="console.command"/>
+        </service>
+    </services>
+</container>

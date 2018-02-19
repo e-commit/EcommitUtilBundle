@@ -11,11 +11,11 @@
 
 namespace Ecommit\UtilBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 class EcommitUtilExtension extends Extension
 {
@@ -35,6 +35,7 @@ class EcommitUtilExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('commands.xml');
 
         $container->setParameter('ecommit_util.clear_apcu.url', $config['clear_apcu']['url']);
         $container->setParameter('ecommit_util.clear_apcu.username', $config['clear_apcu']['username']);
@@ -45,7 +46,7 @@ class EcommitUtilExtension extends Extension
         foreach ($config['cache'] as $name => $options) {
             $serviceName = sprintf('ecommit_cache_%s', $name);
             $container
-                ->setDefinition($serviceName, new DefinitionDecorator('ecommit_util.cache'))
+                ->setDefinition($serviceName, new ChildDefinition('ecommit_util.cache'))
                 ->replaceArgument(0, $options)
                 ->setPublic(true);
         }

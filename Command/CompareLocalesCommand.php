@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class CompareLocalesCommand extends ContainerAwareCommand
@@ -65,7 +65,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $domain = $input->getOption('domain');
         /** @var TranslationLoader $loader */
         $loader = $this->getContainer()->get('translation.loader');
-        /** @var Kernel $kernel */
+        /** @var KernelInterface $kernel */
         $kernel = $this->getContainer()->get('kernel');
 
         // Define Root Path to App folder
