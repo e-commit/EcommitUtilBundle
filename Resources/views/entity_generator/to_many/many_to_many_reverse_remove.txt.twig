@@ -1,0 +1,10 @@
+    /**
+     * Remove {{ variableName }}.
+     *
+     * @param {{ variableType }} ${{ variableName }}
+     */
+    public function {{ methodName }}({{ variableTypeHint }} ${{ variableName }})
+    {
+        $this->{{ fieldName }}->removeElement(${{ variableName }});
+        ${{ variableName }}->{{ foreignMethodName }}($this);
+    }

@@ -10,12 +10,25 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "~3.3",
-        "symfony/twig-bundle": "~3.0"
+        "doctrine/annotations": "*",
+        "doctrine/inflector": "*",
+        "symfony/config": "^3.3",
+        "symfony/console": "^3.3",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/event-dispatcher": "^3.3",
+        "symfony/filesystem": "^3.3",
+        "symfony/finder": "^3.3",
+        "symfony/framework-bundle": "^3.3",
+        "symfony/property-info": "^3.3",
+        "twig/twig": "~1.34|~2.4"
     },
     "suggest": {
         "doctrine/orm": "Required if ClearEntityManager or GenerateEntitiesCommand is used",
-        "guzzlehttp/guzzle": "Required if clear APCU is enabled in upgrade command"
+        "guzzlehttp/guzzle": "Required if clear APCU is enabled in upgrade command",
+        "symfony/doctrine-bridge": "Required if GenerateEntitiesCommand is used",
+        "symfony/http-kernel": "Required if CompareLocalesCommand is used",
+        "symfony/translation": "Required if CompareLocalesCommand is used",
+        "zendframework/zend-cache": "Required if Cache is used"
     },
     "autoload": {
         "psr-4": { "Ecommit\\UtilBundle\\": "" }
