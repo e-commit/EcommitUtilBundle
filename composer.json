@@ -28,7 +28,7 @@
         "symfony/doctrine-bridge": "Required if GenerateEntitiesCommand is used",
         "symfony/http-kernel": "Required if CompareLocalesCommand is used",
         "symfony/translation": "Required if CompareLocalesCommand is used",
-        "zendframework/zend-cache": "Required if Cache is used",
+        "zendframework/zend-cache": "Required if Cache is used"
     },
     "autoload": {
         "psr-4": { "Ecommit\\UtilBundle\\": "" }
