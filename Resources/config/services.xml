@@ -18,7 +18,7 @@
          <argument type="service" id="doctrine" on-invalid="null" />
     </service>
 
-    <service id="ecommit_util.entity_generator" class="Ecommit\UtilBundle\Doctrine\EntityGenerator">
+    <service id="ecommit_util.entity_generator" class="Ecommit\UtilBundle\Doctrine\EntityGenerator" public="true">
          <argument type="service" id="doctrine" on-invalid="null" />
         <argument type="service" id="twig" />
     </service>
