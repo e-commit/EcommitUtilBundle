@@ -68,7 +68,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $config = array();
         $fs = new Filesystem();
         $configFile = $this->getContainer()->get('kernel')->getProjectDir().'/config/compare_locales.yaml';
-        if ($configFile) {
+        if ($fs->exists($configFile)) {
             $config = Yaml::parseFile($configFile);
         }
 
