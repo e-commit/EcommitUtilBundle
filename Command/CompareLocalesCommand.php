@@ -19,8 +19,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Translation\MessageCatalogue;
+use Symfony\Component\Yaml\Yaml;
 
 class CompareLocalesCommand extends ContainerAwareCommand
 {
@@ -34,9 +36,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
             ->setDefinition(array(
                 new InputArgument('source-locale', InputArgument::REQUIRED, 'The source locale'),
                 new InputArgument('target-locale', InputArgument::REQUIRED, 'The target locale'),
-                new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages, defaults to app/Resources folder'),
                 new InputOption('domain', null, InputOption::VALUE_OPTIONAL, 'The messages domain'),
-                new InputOption('all', null, InputOption::VALUE_NONE, 'Load messages from all registered bundles'),
             ))
             ->setDescription('Compare locales');
     }
@@ -63,67 +63,46 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $sourceLocale = $input->getArgument('source-locale');
         $targetLocale = $input->getArgument('target-locale');
         $domain = $input->getOption('domain');
-        /** @var TranslationLoader $loader */
-        $loader = $this->getContainer()->get('translation.loader');
-        /** @var Kernel $kernel */
-        $kernel = $this->getContainer()->get('kernel');
+        $transltator = $this->getContainer()->get('translator');
 
-        // Define Root Path to App folder
-        $transPaths = array($kernel->getRootDir().'/Resources/');
-
-        // Override with provided Bundle info
-        if (null !== $input->getArgument('bundle')) {
-            try {
-                $bundle = $kernel->getBundle($input->getArgument('bundle'));
-                $transPaths = array(
-                    $bundle->getPath().'/Resources/',
-                    sprintf('%s/Resources/%s/', $kernel->getRootDir(), $bundle->getName()),
-                );
-            } catch (\InvalidArgumentException $e) {
-                // such a bundle does not exist, so treat the argument as path
-                $transPaths = array($input->getArgument('bundle').'/Resources/');
-
-                if (!is_dir($transPaths[0])) {
-                    throw new \InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
-                }
-            }
-        } elseif ($input->getOption('all')) {
-            foreach ($kernel->getBundles() as $bundle) {
-                $transPaths[] = $bundle->getPath().'/Resources/';
-                $transPaths[] = sprintf('%s/Resources/%s/', $kernel->getRootDir(), $bundle->getName());
-            }
+        //Config
+        $config = array();
+        $fs = new Filesystem();
+        $configFile = $this->getContainer()->get('kernel')->getProjectDir().'/config/compare_locales.yaml';
+        if ($configFile) {
+            $config = Yaml::parseFile($configFile);
         }
 
         // Extract messages
-        $extractedCatalogueSource = $this->loadCurrentMessages($sourceLocale, $transPaths, $loader);
-        $extractedCatalogueTarget = $this->loadCurrentMessages($targetLocale, $transPaths, $loader);
+        $extractedCatalogueSource = $transltator->getCatalogue($sourceLocale);
+        $extractedCatalogueTarget = $transltator->getCatalogue($targetLocale);
         $allMessagesSource = $extractedCatalogueSource->all($domain);
-        if (!$this->checkExtractMessages($io, $allMessagesSource, $domain, $sourceLocale)) {
-            return;
-        }
         if (null !== $domain) {
             $allMessagesSource = array($domain => $allMessagesSource);
         }
-        $allMessagesTarget = $extractedCatalogueTarget->all($domain);
-        if (!$this->checkExtractMessages($io, $allMessagesTarget, $domain, $targetLocale)) {
+        if (!$this->checkExtractMessages($io, $allMessagesSource, $domain, $sourceLocale)) {
             return;
         }
+        $allMessagesTarget = $extractedCatalogueTarget->all($domain);
         if (null !== $domain) {
             $allMessagesTarget = array($domain => $allMessagesTarget);
+        }
+        if (!$this->checkExtractMessages($io, $allMessagesTarget, $domain, $targetLocale)) {
+            return;
         }
 
         //Diff
         $rows = array();
         foreach ($allMessagesSource as $domain => $messages) {
             foreach ($messages as $id => $message) {
-                if (!$extractedCatalogueTarget->has($id, $domain)) {
+                if (empty($allMessagesTarget[$domain][$id]) && !$this->ignoreMissingMessage($targetLocale, $id, $config)) {
                     $rows[] = ['<error>Missing</error>', $domain, $id, $message];
                 }
             }
         }
         foreach ($allMessagesTarget as $domain => $messages) {
             foreach ($messages as $id => $message) {
-                if (!$extractedCatalogueSource->has($id, $domain)) {
+                if (empty($allMessagesSource[$domain][$id])) {
                     $rows[] = ['<info>Unused</info>', $domain, $id, $message];
                 }
             }
@@ -138,26 +117,6 @@ class CompareLocalesCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string            $locale
-     * @param array             $transPaths
-     * @param TranslationLoader $loader
-     *
-     * @return MessageCatalogue
-     */
-    private function loadCurrentMessages($locale, $transPaths, TranslationLoader $loader)
-    {
-        $currentCatalogue = new MessageCatalogue($locale);
-        foreach ($transPaths as $path) {
-            $path = $path.'translations';
-            if (is_dir($path)) {
-                $loader->loadMessages($path, $currentCatalogue);
-            }
-        }
-
-        return $currentCatalogue;
-    }
-
-    /**
      * @param SymfonyStyle $io
      * @param $allMessages
      * @param $domain
@@ -166,7 +125,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
      */
     private function checkExtractMessages(SymfonyStyle $io, $allMessages, $domain, $locale)
     {
-        if (empty($allMessages) || null !== $domain && empty($allMessages[$domain])) {
+        if (empty($allMessages) || (null !== $domain && empty($allMessages[$domain]))) {
             $outputMessage = sprintf('No defined or extracted messages for locale "%s"', $locale);
 
             if (null !== $domain) {
@@ -179,5 +138,27 @@ class CompareLocalesCommand extends ContainerAwareCommand
         }
 
         return true;
+    }
+
+    /**
+     * @param string $locale
+     * @param string $messageId
+     * @param array $config
+     *
+     * @return bool
+     */
+    protected function ignoreMissingMessage($locale, $messageId, $config)
+    {
+        if (!isset($config['ignore_missing_messages'])) {
+            return false;
+        }
+
+        foreach ([$locale, 'all'] as $lang) {
+            if (isset($config['ignore_missing_messages'][$lang]) && in_array($messageId, $config['ignore_missing_messages'][$lang])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
