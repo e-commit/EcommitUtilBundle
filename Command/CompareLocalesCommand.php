@@ -20,7 +20,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Yaml\Yaml;
 
@@ -69,7 +68,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $config = array();
         $fs = new Filesystem();
         $configFile = $this->getContainer()->get('kernel')->getProjectDir().'/config/compare_locales.yaml';
-        if ($configFile) {
+        if ($fs->exists($configFile)) {
             $config = Yaml::parseFile($configFile);
         }
 
