@@ -110,9 +110,13 @@ class CompareLocalesCommand extends ContainerAwareCommand
         if (count($rows) > 0) {
             $headers = array('State', 'Domain', 'Id', 'Messsage');
             $io->table($headers, $rows);
+
+            return 2;
         } else {
             $io->success('No error.');
         }
+
+        return 0;
     }
 
     /**
