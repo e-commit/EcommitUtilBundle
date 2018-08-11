@@ -94,7 +94,7 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $rows = array();
         foreach ($allMessagesSource as $domain => $messages) {
             foreach ($messages as $id => $message) {
-                if (empty($allMessagesTarget[$domain][$id]) && !$this->ignoreMissingMessage($targetLocale, $id, $config)) {
+                if (empty($allMessagesTarget[$domain][$id]) && !$this->ignoreMissingMessage($targetLocale, $domain, $id, $config)) {
                     $rows[] = ['<error>Missing</error>', $domain, $id, $message];
                 }
             }
@@ -145,19 +145,23 @@ class CompareLocalesCommand extends ContainerAwareCommand
 
     /**
      * @param string $locale
+     * @param string $domain
      * @param string $messageId
      * @param array $config
      *
      * @return bool
      */
-    protected function ignoreMissingMessage($locale, $messageId, $config)
+    protected function ignoreMissingMessage($locale, $domain, $messageId, $config)
     {
         if (!isset($config['ignore_missing_messages'])) {
             return false;
         }
+        if (!isset($config['ignore_missing_messages'][$domain])) {
+            return false;
+        }
 
         foreach ([$locale, 'all'] as $lang) {
-            if (isset($config['ignore_missing_messages'][$lang]) && in_array($messageId, $config['ignore_missing_messages'][$lang])) {
+            if (isset($config['ignore_missing_messages'][$domain][$lang]) && in_array($messageId, $config['ignore_missing_messages'][$domain][$lang])) {
                 return true;
             }
         }
