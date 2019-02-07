@@ -209,11 +209,11 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
 
         $output->writeln('<comment>Install assets...</comment>');
 
-        $webDir = \realpath($this->getContainer()->get('kernel')->getRootDir() . '/../web');
+        $publicDir = \realpath($this->getContainer()->getParameter('kernel.project_dir') . '/public');
         $command = $this->getApplication()->find('assets:install');
         $arguments = array(
             'command' => 'assets:install',
-            'target' => $webDir,
+            'target' => $publicDir,
             '--relative' => true,
         );
         $arrayInput = new ArrayInput($arguments);
@@ -257,7 +257,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
         foreach ($config['instances'] as $instance) {
             foreach ($instance['connector']['roots'] as $root) {
                 if ('LocalFileSystem' === $root['driver']) {
-                    $dir = $this->getContainer()->get('kernel')->getRootDir().'/../web/'.$root['path'];
+                    $dir = $this->getContainer()->getParameter('kernel.project_dir').'/public/'.$root['path'];
                     if (!$fs->exists($dir)) {
                         $fs->mkdir($dir, 0777);
                     }

@@ -12,16 +12,17 @@
     "require": {
         "doctrine/annotations": "*",
         "doctrine/inflector": "*",
-        "symfony/config": "^4.0",
-        "symfony/console": "^4.0",
-        "symfony/dependency-injection": "^4.0",
-        "symfony/event-dispatcher": "^4.0",
-        "symfony/filesystem": "^4.0",
-        "symfony/finder": "^4.0",
-        "symfony/framework-bundle": "^4.0",
-        "symfony/property-info": "^4.0",
-        "symfony/twig-bundle": "^4.0",
-        "symfony/yaml": "^4.0",
+        "symfony/config": "^4.2",
+        "symfony/console": "^4.2",
+        "symfony/dependency-injection": "^4.2",
+        "symfony/event-dispatcher": "^4.2",
+        "symfony/filesystem": "^4.2",
+        "symfony/finder": "^4.2",
+        "symfony/framework-bundle": "^4.2",
+        "symfony/http-kernel": "^4.2",
+        "symfony/property-info": "^4.2",
+        "symfony/twig-bundle": "^4.2",
+        "symfony/yaml": "^4.2",
         "twig/twig": "~1.34|~2.4"
     },
     "suggest": {
@@ -29,8 +30,7 @@
         "guzzlehttp/guzzle": "Required if clear APCU is enabled in upgrade command",
         "symfony/doctrine-bridge": "Required if GenerateEntitiesCommand is used",
         "symfony/http-kernel": "Required if CompareLocalesCommand is used",
-        "symfony/translation": "Required if CompareLocalesCommand is used",
-        "zendframework/zend-cache": "Required if Cache is used"
+        "symfony/translation": "Required if CompareLocalesCommand is used"
     },
     "autoload": {
         "psr-4": { "Ecommit\\UtilBundle\\": "" }

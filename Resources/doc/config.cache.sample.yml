@@ -10,4 +10,4 @@ ecommit_util:
                    backend:
                         name: File
                         options:
-                            cache_dir: %kernel.root_dir%/cache/%kernel.environment%
+                            cache_dir: "%kernel.project_dir%/var/cache/%kernel.environment%"

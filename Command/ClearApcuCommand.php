@@ -11,12 +11,24 @@
 
 namespace Ecommit\UtilBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClearApcuCommand extends ContainerAwareCommand
+class ClearApcuCommand extends Command
 {
+    protected $url;
+    protected $username;
+    protected $password;
+
+    public function __construct($url, $username, $password)
+    {
+        $this->url = $url;
+        $this->username = $username;
+        $this->password = $password;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -28,8 +40,10 @@ class ClearApcuCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->getContainer()->getParameter('ecommit_util.clear_apcu.url')) {
+        if (!$this->url) {
             $output->writeln('<error>ecommit_util.clear_apcu.url is not defined</error>');
+
+            return;
         }
 
         $output->writeln('Clearing APCU');
@@ -37,12 +51,12 @@ class ClearApcuCommand extends ContainerAwareCommand
         $requestOptions = [
             'http_errors' => true,
         ];
-        if ($this->getContainer()->getParameter('ecommit_util.clear_apcu.username') && $this->getContainer()->getParameter('ecommit_util.clear_apcu.password')) {
-            $requestOptions['auth'] = [$this->getContainer()->getParameter('ecommit_util.clear_apcu.username'), $this->getContainer()->getParameter('ecommit_util.clear_apcu.password')];
+        if ($this->username && $this->password) {
+            $requestOptions['auth'] = [$this->username, $this->password];
         }
 
         $client = new \GuzzleHttp\Client();
-        $client->request('GET', $this->getContainer()->getParameter('ecommit_util.clear_apcu.url'), $requestOptions);
+        $client->request('GET', $this->url, $requestOptions);
 
         $output->writeln('<info>APCU was successfully cleared.</info>');
     }

@@ -53,6 +53,9 @@ class EntityGenerator
         if (null === $this->doctrine) {
             throw new \Exception('Doctrine is required');
         }
+        if (null === $this->twig) {
+            throw new \Exception('Twig is required');
+        }
 
         $metadataFactory = $this->doctrine->getManager()->getMetadataFactory();
         if (!$metadataFactory->hasMetadataFor($class)) {

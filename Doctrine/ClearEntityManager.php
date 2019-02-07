@@ -25,7 +25,7 @@ class ClearEntityManager
      */
     protected $snapshots = array();
 
-    public function __construct(Registry $registry)
+    public function __construct(Registry $registry = null)
     {
         $this->doctrine = $registry;
     }
@@ -36,6 +36,10 @@ class ClearEntityManager
      */
     public function snapshotEntityManager($managerName = null)
     {
+        if (null === $this->doctrine) {
+            throw new \Exception('Doctrine is required');
+        }
+
         if (null === $managerName) {
             $managerName = $this->doctrine->getDefaultConnectionName();
         }
@@ -48,6 +52,10 @@ class ClearEntityManager
      */
     public function clearEntityManager($managerName = null)
     {
+        if (null === $this->doctrine) {
+            throw new \Exception('Doctrine is required');
+        }
+
         if (null === $managerName) {
             $managerName = $this->doctrine->getDefaultConnectionName();
         }

@@ -11,14 +11,22 @@
 
 namespace Ecommit\UtilBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DeployCommand extends ContainerAwareCommand
+class DeployCommand extends Command
 {
+    protected $projectDir;
+
+    public function __construct($projectDir)
+    {
+        $this->projectDir = $projectDir;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -32,14 +40,11 @@ class DeployCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Parse the rsync.ini file
-        $rsyncIniFile = $this->getContainer()->getParameter('kernel.project_dir') . '/config/rsync.ini';
+        $rsyncIniFile = $this->projectDir . '/config/rsync.ini';
         if (!file_exists($rsyncIniFile)) {
-            $rsyncIniFile = $this->getContainer()->getParameter('kernel.project_dir') . '/app/config/rsync.ini';
-            if (!file_exists($rsyncIniFile)) {
-                $output->writeln('<error>File sync.ini does not exist</error>');
+            $output->writeln('<error>File sync.ini does not exist</error>');
 
-                return;
-            }
+            return;
         }
 
         $result = parse_ini_file($rsyncIniFile, true);
@@ -83,10 +88,8 @@ class DeployCommand extends ContainerAwareCommand
         $parameters = '-azC --force --delete --progress';
 
         // RSYNC exclude option
-        if (file_exists($this->getContainer()->getParameter('kernel.project_dir') . '/config/rsync_exclude.txt')) {
+        if (file_exists($this->projectDir . '/config/rsync_exclude.txt')) {
             $parameters .= sprintf(' --exclude-from=config/rsync_exclude.txt');
-        } elseif (file_exists($this->getContainer()->getParameter('kernel.project_dir') . '/app/config/rsync_exclude.txt')) {
-            $parameters .= sprintf(' --exclude-from=app/config/rsync_exclude.txt');
         } else {
             $dialog = $this->getHelperSet()->get('dialog');
             if (!$dialog->askConfirmation(

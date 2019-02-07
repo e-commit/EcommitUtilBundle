@@ -2,27 +2,26 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   
   <services>
-    <service id="ecommit_util.helper" class="Ecommit\UtilBundle\Helper\UtilHelper" public="true" />
-    <service id="Ecommit\UtilBundle\Helper\UtilHelper" alias="ecommit_util.helper" public="true" />
+    <service id="Ecommit\UtilBundle\Helper\UtilHelper" class="Ecommit\UtilBundle\Helper\UtilHelper" public="true" />
+    <service id="ecommit_util.helper" alias="Ecommit\UtilBundle\Helper\UtilHelper" public="true" />
 
-    <service id="ecommit_util.twig.util_extension" class="Ecommit\UtilBundle\Twig\UtilExtension" public="false">
-        <argument type="service" id="ecommit_util.helper" />
+    <service id="Ecommit\UtilBundle\Twig\UtilExtension" class="Ecommit\UtilBundle\Twig\UtilExtension">
+        <argument type="service" id="Ecommit\UtilBundle\Helper\UtilHelper" />
         <tag name="twig.extension" />
     </service>
     
-    <service id="ecommit_util.cache" class="Ecommit\UtilBundle\Cache\Cache" abstract="true" public="false">
-         <argument /> <!-- Options -->
+    <service id="ecommit_util.cache" class="Ecommit\UtilBundle\Cache\Cache" abstract="true">
+        <argument /> <!-- Options -->
     </service>
 
-    <service id="ecommit_util.clear_entity_manager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true">
-         <argument type="service" id="doctrine" on-invalid="null" />
+    <service id="Ecommit\UtilBundle\Doctrine\ClearEntityManager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true">
+        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" on-invalid="null" />
     </service>
-    <service id="Ecommit\UtilBundle\Doctrine\ClearEntityManager" alias="ecommit_util.clear_entity_manager" public="true" />
+    <service id="ecommit_util.clear_entity_manager" alias="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true" />
 
-    <service id="ecommit_util.entity_generator" class="Ecommit\UtilBundle\Doctrine\EntityGenerator" public="true">
-         <argument type="service" id="doctrine" on-invalid="null" />
-        <argument type="service" id="twig" />
+    <service id="Ecommit\UtilBundle\Doctrine\EntityGenerator" class="Ecommit\UtilBundle\Doctrine\EntityGenerator">
+        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" on-invalid="null" />
+        <argument type="service" id="Twig\Environment" on-invalid="null" />
     </service>
-    <service id="Ecommit\UtilBundle\Doctrine\EntityGenerator" alias="ecommit_util.entity_generator" public="true" />
   </services>
 </container>

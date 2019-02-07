@@ -12,19 +12,33 @@
 
 namespace Ecommit\UtilBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Bundle\FrameworkBundle\Translation\TranslationLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CompareLocalesCommand extends ContainerAwareCommand
+class CompareLocalesCommand extends Command
 {
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    protected $projectDir;
+
+    public function __construct(TranslatorInterface $translator = null, $projectDir)
+    {
+        $this->translator = $translator;
+        $this->projectDir = $projectDir;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -62,19 +76,18 @@ class CompareLocalesCommand extends ContainerAwareCommand
         $sourceLocale = $input->getArgument('source-locale');
         $targetLocale = $input->getArgument('target-locale');
         $domain = $input->getOption('domain');
-        $transltator = $this->getContainer()->get('translator');
 
         //Config
         $config = array();
         $fs = new Filesystem();
-        $configFile = $this->getContainer()->get('kernel')->getProjectDir().'/config/compare_locales.yaml';
+        $configFile = $this->projectDir.'/config/compare_locales.yaml';
         if ($fs->exists($configFile)) {
             $config = Yaml::parseFile($configFile);
         }
 
         // Extract messages
-        $extractedCatalogueSource = $transltator->getCatalogue($sourceLocale);
-        $extractedCatalogueTarget = $transltator->getCatalogue($targetLocale);
+        $extractedCatalogueSource = $this->translator->getCatalogue($sourceLocale);
+        $extractedCatalogueTarget = $this->translator->getCatalogue($targetLocale);
         $allMessagesSource = $extractedCatalogueSource->all($domain);
         if (null !== $domain) {
             $allMessagesSource = array($domain => $allMessagesSource);
