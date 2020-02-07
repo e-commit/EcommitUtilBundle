@@ -44,14 +44,14 @@ class DeployCommand extends Command
         if (!file_exists($rsyncIniFile)) {
             $output->writeln('<error>File sync.ini does not exist</error>');
 
-            return;
+            return 2;
         }
 
         $result = parse_ini_file($rsyncIniFile, true);
         if (false === $result || array() === $result) {
             $output->writeln(sprintf('<error>File %s: Bad format</error>', $rsyncIniFile));
 
-            return;
+            return 2;
         }
 
         // Check if the server exists
@@ -59,7 +59,7 @@ class DeployCommand extends Command
         if (!array_key_exists($server_name, $result)) {
             $output->writeln(sprintf('<error>Server %s does not exist</error>', $server_name));
 
-            return;
+            return 2;
         }
         $server_infos = $result[$server_name];
 
@@ -69,7 +69,7 @@ class DeployCommand extends Command
             if (!array_key_exists($option, $server_infos)) {
                 $output->writeln(sprintf('<error>Missing %s option</error>', $option));
 
-                return;
+                return 2;
             }
         }
 
@@ -98,7 +98,7 @@ class DeployCommand extends Command
                 false
             )
             ) {
-                return;
+                return -1;
             }
         }
 
@@ -115,6 +115,8 @@ class DeployCommand extends Command
         );
 
         $output->writeln(\passthru($command));
+
+        return 0;
     }
 
 }

@@ -15,12 +15,12 @@
     </service>
 
     <service id="Ecommit\UtilBundle\Doctrine\ClearEntityManager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true">
-        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" on-invalid="null" />
+        <argument type="service" id="Doctrine\Persistence\ManagerRegistry" on-invalid="null" />
     </service>
     <service id="ecommit_util.clear_entity_manager" alias="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true" />
 
     <service id="Ecommit\UtilBundle\Doctrine\EntityGenerator" class="Ecommit\UtilBundle\Doctrine\EntityGenerator">
-        <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" on-invalid="null" />
+        <argument type="service" id="Doctrine\Persistence\ManagerRegistry" on-invalid="null" />
         <argument type="service" id="Twig\Environment" on-invalid="null" />
     </service>
   </services>

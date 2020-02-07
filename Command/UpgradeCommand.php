@@ -48,7 +48,7 @@ class UpgradeCommand extends AbstractUpdateCommand
         trigger_error('UpgradeCommand is deprecated since version 2.4.', E_USER_DEPRECATED);
 
         if (!$this->start($input, $output)) {
-            return;
+            return -1;
         }
 
         $this->clearApcu($output);
@@ -60,5 +60,7 @@ class UpgradeCommand extends AbstractUpdateCommand
         $this->addInstallLockFile($output);
 
         $this->finish($input, $output);
+
+        return 0;
     }
 }

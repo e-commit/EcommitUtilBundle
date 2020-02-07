@@ -13,8 +13,8 @@
 namespace Ecommit\UtilBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\UtilBundle\Doctrine\EntityGenerator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,11 +28,11 @@ class GenerateEntitiesCommand extends Command
     protected $entityGenerator;
 
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
-    public function __construct(EntityGenerator $entityGenerator, RegistryInterface $doctrine = null)
+    public function __construct(EntityGenerator $entityGenerator, ManagerRegistry $doctrine = null)
     {
         $this->entityGenerator = $entityGenerator;
         $this->doctrine = $doctrine;
@@ -80,5 +80,7 @@ class GenerateEntitiesCommand extends Command
                 $output->writeln('    <error>Ignored</error>');
             }
         }
+
+        return 0;
     }
 }

@@ -22,7 +22,7 @@
 
         <service id="Ecommit\UtilBundle\Command\GenerateEntitiesCommand" class="Ecommit\UtilBundle\Command\GenerateEntitiesCommand">
             <argument type="service" id="Ecommit\UtilBundle\Doctrine\EntityGenerator" />
-            <argument type="service" id="Symfony\Bridge\Doctrine\RegistryInterface" />
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
             <tag name="console.command"/>
         </service>
 

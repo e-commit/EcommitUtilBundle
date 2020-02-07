@@ -15,17 +15,21 @@ use Doctrine\Bundle\MigrationsBundle\Command\DoctrineCommand;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\OutputWriter;
 use Ecommit\UtilBundle\Event\UpdateEvent;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractUpdateCommand  extends ContainerAwareCommand
+abstract class AbstractUpdateCommand extends Command implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     protected $begin;
     protected $end;
     protected $isInteractive;
@@ -39,6 +43,11 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
      * @return string
      */
     protected abstract function getAfterEvent();
+
+    public function getContainer()
+    {
+        return $this->container;
+    }
 
     protected function start(InputInterface $input, OutputInterface $output)
     {
@@ -56,7 +65,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
 
         //Event
         $event = new UpdateEvent($input, $output);
-        $this->getContainer()->get('event_dispatcher')->dispatch($this->getBeforeEvent(), $event);
+        $this->getContainer()->get('event_dispatcher')->dispatch($event, $this->getBeforeEvent());
 
         if ($event->getCancelDefaultBehavior()) {
             $this->finish($input, $output);
@@ -71,7 +80,7 @@ abstract class AbstractUpdateCommand  extends ContainerAwareCommand
     {
         //Event
         $event = new UpdateEvent($input, $output);
-        $this->getContainer()->get('event_dispatcher')->dispatch($this->getAfterEvent(), $event);
+        $this->getContainer()->get('event_dispatcher')->dispatch($event, $this->getAfterEvent());
 
         $this->end = \microtime(true);
         $duration = \ceil($this->end - $this->begin);

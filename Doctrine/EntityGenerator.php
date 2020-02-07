@@ -11,12 +11,12 @@
 
 namespace Ecommit\UtilBundle\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Util\Inflector;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\Persistence\ManagerRegistry;
 use Ecommit\UtilBundle\Annotations\IgnoreGenerateEntities;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Twig\Environment;
@@ -24,7 +24,7 @@ use Twig\Environment;
 class EntityGenerator
 {
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
@@ -36,10 +36,10 @@ class EntityGenerator
     /**
      * GenerateEntity constructor.
      *
-     * @param Registry|null $doctrine
+     * @param ManagerRegistry|null $doctrine
      * @param Environment   $twig
      */
-    public function __construct(Registry $doctrine = null, Environment $twig)
+    public function __construct(ManagerRegistry $doctrine = null, Environment $twig)
     {
         $this->doctrine = $doctrine;
         $this->twig = $twig;
@@ -88,7 +88,7 @@ class EntityGenerator
         }
 
         //Get properties
-        $doctrineExtractor = new DoctrineExtractor($metadataFactory);
+        $doctrineExtractor = new DoctrineExtractor($this->doctrine->getManager());
         $properties = $doctrineExtractor->getProperties($class);
 
         //Process

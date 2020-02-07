@@ -11,12 +11,12 @@
 
 namespace Ecommit\UtilBundle\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ClearEntityManager
 {
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
@@ -25,7 +25,7 @@ class ClearEntityManager
      */
     protected $snapshots = array();
 
-    public function __construct(Registry $registry = null)
+    public function __construct(ManagerRegistry $registry = null)
     {
         $this->doctrine = $registry;
     }

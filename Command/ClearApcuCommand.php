@@ -59,5 +59,7 @@ class ClearApcuCommand extends Command
         $client->request('GET', $this->url, $requestOptions);
 
         $output->writeln('<info>APCU was successfully cleared.</info>');
+
+        return 0;
     }
 }

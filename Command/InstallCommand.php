@@ -49,7 +49,7 @@ class InstallCommand extends AbstractUpdateCommand
         trigger_error('InstallCommand is deprecated since version 2.4.', E_USER_DEPRECATED);
 
         if (!$this->start($input, $output)) {
-            return;
+            return -1;
         }
 
         //Check lock
@@ -58,7 +58,7 @@ class InstallCommand extends AbstractUpdateCommand
         if ($lockPath && $fs->exists($lockPath)) {
             $output->writeln('<error>Aborting - Application already installed</error>');
 
-            return;
+            return 2;
         }
 
         $this->updateDoctrineSchema($output);
@@ -71,5 +71,7 @@ class InstallCommand extends AbstractUpdateCommand
         $this->addInstallLockFile($output);
 
         $this->finish($input, $output);
+
+        return 0;
     }
 }
