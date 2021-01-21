@@ -22,7 +22,7 @@
 
         <service id="Ecommit\UtilBundle\Command\GenerateEntitiesCommand" class="Ecommit\UtilBundle\Command\GenerateEntitiesCommand">
             <argument type="service" id="Ecommit\UtilBundle\Doctrine\EntityGenerator" />
-            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" />
+            <argument type="service" id="Doctrine\Persistence\ManagerRegistry" on-invalid="null" />
             <tag name="console.command"/>
         </service>
 
