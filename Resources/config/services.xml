@@ -9,10 +9,6 @@
         <argument type="service" id="Ecommit\UtilBundle\Helper\UtilHelper" />
         <tag name="twig.extension" />
     </service>
-    
-    <service id="ecommit_util.cache" class="Ecommit\UtilBundle\Cache\Cache" abstract="true">
-        <argument /> <!-- Options -->
-    </service>
 
     <service id="Ecommit\UtilBundle\Doctrine\ClearEntityManager" class="Ecommit\UtilBundle\Doctrine\ClearEntityManager" public="true">
         <argument type="service" id="Doctrine\Persistence\ManagerRegistry" on-invalid="null" />

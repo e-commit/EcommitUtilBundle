@@ -39,18 +39,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('password')->defaultValue(null)->end()
                     ->end()
                 ->end()
-                ->scalarNode('install_lock_file')->defaultValue('%kernel.project_dir%/var/install.lock')->end()
-                ->arrayNode('cache')
-                    ->treatNullLike(array())
-                    ->useAttributeAsKey('name')
-                    ->prototype('variable')
-                        ->treatNullLike(array())
-                        ->validate()
-                            ->ifTrue(function ($v) { return !is_array($v); })
-                            ->thenInvalid('The util.cache config %s must be an array.')
-                        ->end()
-                    ->end()
-                ->end()
             ->end()
         ;
 
