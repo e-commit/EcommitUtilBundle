@@ -34,10 +34,5 @@
     },
     "autoload": {
         "psr-4": { "Ecommit\\UtilBundle\\": "" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.5.x-dev"
-        }
     }
 }
