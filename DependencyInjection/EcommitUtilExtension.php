@@ -11,7 +11,6 @@
 
 namespace Ecommit\UtilBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -30,15 +29,7 @@ class EcommitUtilExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        $loader->load('commands.xml');
-
-        $container->setParameter('ecommit_util.clear_apcu.url', $config['clear_apcu']['url']);
-        $container->setParameter('ecommit_util.clear_apcu.username', $config['clear_apcu']['username']);
-        $container->setParameter('ecommit_util.clear_apcu.password', $config['clear_apcu']['password']);
     }
 }
